@@ -25,12 +25,13 @@ jobs:
           java-version: '17'
           distribution: "adopt"
 
-      - name: Make application.properties
+      - name: Make application.properties & Firebase Service Account Key
         run: |
           cd ./src/main/resources
           touch ./application.properties
           echo "${{ secrets.PROPERTIES }}" > ./application.properties
-          cp "${{ secrets.ONCE_FIREBASE_ADMINSDK }}" ./firebase/once-firebase-adminsdk.json
+          touch ./firebase/once-firebase-adminsdk.json
+          echo "${{ secrets.ONCE_FIREBASE_ADMINSDK }}" > ./firebase/once-firebase-adminsdk.json
         shell: bash
 
       - name: Build with Gradle
@@ -52,12 +53,13 @@ jobs:
           java-version: '17'
           distribution: "adopt"
 
-      - name: Make application.properties
+      - name: Make application.properties & Firebase Service Account Key
         run: |
           cd ./src/main/resources
           touch ./application.properties
           echo "${{ secrets.PROPERTIES }}" > ./application.properties
-          cp "${{ secrets.ONCE_FIREBASE_ADMINSDK }}" ./firebase/once-firebase-adminsdk.json
+          touch ./firebase/once-firebase-adminsdk.json
+          echo "${{ secrets.ONCE_FIREBASE_ADMINSDK }}" > ./firebase/once-firebase-adminsdk.json
         shell: bash
 
       - name: Build with Gradle

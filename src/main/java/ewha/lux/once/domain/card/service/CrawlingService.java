@@ -50,11 +50,13 @@ public class CrawlingService {
 //                    .getResource("classpath*:crawling/"+path);
             for( Resource re : resources){
                 LOG.info(String.valueOf(re));
+                LOG.info(String.valueOf(re.exists()));
+                LOG.info(String.valueOf(re.isFile()));
             }
 
             LOG.info(String.valueOf(resources[0].exists()));
             LOG.info(String.valueOf(resources[0].isFile()));
-            LOG.info(String.valueOf(resources[0].getURL()));
+            LOG.info(String.valueOf(resources[0].getURI()));
             InputStream inputStream = resources[0].getInputStream();
             //------------------------------------
 

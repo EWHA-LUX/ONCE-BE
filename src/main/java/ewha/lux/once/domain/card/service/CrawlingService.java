@@ -4,11 +4,14 @@ import ewha.lux.once.global.common.CustomException;
 import ewha.lux.once.global.common.ResponseCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
+
 
 
 @Service
@@ -44,20 +48,30 @@ public class CrawlingService {
     }
     private static void executeFile(String path) throws CustomException {
         try {
-            Resource[] resources = ResourcePatternUtils
-                    .getResourcePatternResolver(new DefaultResourceLoader())
-                    .getResources("classpath*:crawling/Kookmin/**");
-//                    .getResource("classpath*:crawling/"+path);
-            for( Resource re : resources){
-                LOG.info(String.valueOf(re));
-                LOG.info(String.valueOf(re.exists()));
-                LOG.info(String.valueOf(re.isFile()));
-            }
+//            ResourceLoader loader = null;
+//            val file = loader.getResource("classpath:/example.txt").file;
+//            InputStream inputStream = new ClassPathResource("folder/resourceFile.dat").getInputStream();
+//            File file =File.createTempFile("resourceFile",".py");
+//            try {
+//                FileUtils.copyInputStreamToFile(inputStream, file);
+//            } finally {
+//                IOUtils.closeQuietly(inputStream);
+//            }
 
-            LOG.info(String.valueOf(resources[0].exists()));
-            LOG.info(String.valueOf(resources[0].isFile()));
-            LOG.info(String.valueOf(resources[0].getURI()));
-            InputStream inputStream = resources[0].getInputStream();
+            Resource resources = ResourcePatternUtils
+                    .getResourcePatternResolver(new DefaultResourceLoader())
+                    .getResource("classpath:crawling/Kookmin/credit.py");
+//                    .getResource("classpath*:crawling/"+path);
+//            for( Resource re : resources){
+//                LOG.info(String.valueOf(re));
+//                LOG.info(String.valueOf(re.exists()));
+//                LOG.info(String.valueOf(re.isFile()));
+//            }
+
+            LOG.info(String.valueOf(resources.exists()));
+            LOG.info(String.valueOf(resources.isFile()));
+            LOG.info(String.valueOf(resources.getURI()));
+            InputStream inputStream = resources.getInputStream();
             //------------------------------------
 
             // InputStream으로부터 데이터를 읽어올 BufferedReader 생성
@@ -79,6 +93,8 @@ public class CrawlingService {
 
             File file =File.createTempFile("crawling/"+path,".py");
             FileUtils.copyInputStreamToFile(inputStream, file);
+
+            //=====================================================================
 
             ProcessBuilder pb = new ProcessBuilder("python", file.getPath());
             pb.redirectErrorStream(true);

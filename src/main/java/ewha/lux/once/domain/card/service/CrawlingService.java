@@ -46,6 +46,7 @@ public class CrawlingService {
             Resource resource = ResourcePatternUtils
                     .getResourcePatternResolver(new DefaultResourceLoader())
                     .getResource("classpath*:crawling/"+path);
+            LOG.info(String.valueOf(resource));
             InputStream inputStream = resource.getInputStream();
             LOG.info(String.valueOf(inputStream));
 

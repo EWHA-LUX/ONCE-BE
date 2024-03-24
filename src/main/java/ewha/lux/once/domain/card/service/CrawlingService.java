@@ -44,7 +44,7 @@ public class CrawlingService {
         try {
             Resource[] resources = ResourcePatternUtils
                     .getResourcePatternResolver(new DefaultResourceLoader())
-                    .getResources("classpath*:**");
+                    .getResources("classpath*:crawling/**");
             for(Resource re : resources){
                 LOG.info(String.valueOf(re));
             }

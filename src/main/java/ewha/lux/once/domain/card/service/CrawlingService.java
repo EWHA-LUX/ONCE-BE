@@ -44,11 +44,14 @@ public class CrawlingService {
     }
     private static void executeFile(String path) throws CustomException {
         try {
-            Resource[] resource = ResourcePatternUtils
+            Resource[] resources = ResourcePatternUtils
                     .getResourcePatternResolver(new DefaultResourceLoader())
                     .getResources("classpath*:crawling/Kookmin/**");
 //                    .getResource("classpath*:crawling/"+path);
-            LOG.info(String.valueOf(resource));
+            for( Resource re : resources){
+                LOG.info(String.valueOf(re));
+            }
+
             LOG.info(String.valueOf(resource[0].exists()));
             LOG.info(String.valueOf(resource[0].isFile()));
             LOG.info(String.valueOf(resource[0].getURL()));

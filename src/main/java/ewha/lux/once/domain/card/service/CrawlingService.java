@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternUtils;
@@ -45,9 +46,12 @@ public class CrawlingService {
         try {
             Resource resource = ResourcePatternUtils
                     .getResourcePatternResolver(new DefaultResourceLoader())
-                    .getResource("classpath*:crawling/"+path);
+                            .getResource("classpath*:crawling/DatabaseInsert.py");
+//                    .getResource("classpath*:crawling/"+path);
             LOG.info(String.valueOf(resource));
             InputStream inputStream = resource.getInputStream();
+//            InputStream inputStream = new ClassPathResource("crawling/"+path).getInputStream();
+            LOG.info("1");
             LOG.info(String.valueOf(inputStream));
 
             File file =File.createTempFile("crawling/"+path,".py");

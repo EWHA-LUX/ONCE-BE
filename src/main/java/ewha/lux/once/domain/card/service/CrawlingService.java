@@ -44,12 +44,13 @@ public class CrawlingService {
     }
     private static void executeFile(String path) throws CustomException {
         try {
-            Resource resource = ResourcePatternUtils
+            Resource[] resource = ResourcePatternUtils
                     .getResourcePatternResolver(new DefaultResourceLoader())
-                    .getResource("classpath*:crawling/Kookmin/**");
+                    .getResources("classpath*:crawling/Kookmin/**");
 //                    .getResource("classpath*:crawling/"+path);
             LOG.info(String.valueOf(resource));
-            InputStream inputStream = resource.getInputStream();
+            LOG.info(String.valueOf(resource[0]));
+            InputStream inputStream = resource[0].getInputStream();
 //            InputStream inputStream = new ClassPathResource("crawling/"+path).getInputStream();
             LOG.info("1");
             LOG.info(String.valueOf(inputStream));

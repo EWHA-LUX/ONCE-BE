@@ -49,7 +49,9 @@ public class CrawlingService {
                     .getResources("classpath*:crawling/Kookmin/**");
 //                    .getResource("classpath*:crawling/"+path);
             LOG.info(String.valueOf(resource));
-            LOG.info(String.valueOf(resource[0]));
+            LOG.info(String.valueOf(resource[0].exists()));
+            LOG.info(String.valueOf(resource[0].isFile()));
+            LOG.info(String.valueOf(resource[0].getURL()));
             InputStream inputStream = resource[0].getInputStream();
             //------------------------------------
 

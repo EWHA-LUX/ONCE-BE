@@ -48,50 +48,54 @@ public class CrawlingService {
                     .getResourcePatternResolver(new DefaultResourceLoader())
                     .getResources("classpath*:crawling/Kookmin/**");
 //                    .getResource("classpath*:crawling/"+path);
-            for( Resource re : resources){
+            for( Resource re : resources) {
                 LOG.info(String.valueOf(re));
+                LOG.info(String.valueOf(re.exists()));
+                LOG.info(String.valueOf(re.isFile()));
+                LOG.info(String.valueOf(re.getURL()));
+                InputStream inputStream = re.getInputStream();
+                LOG.info(String.valueOf(inputStream));
+
+
+                File file =File.createTempFile("crawling/"+path,".py");
+                FileUtils.copyInputStreamToFile(inputStream, file);
+
+                ProcessBuilder pb = new ProcessBuilder("python", file.getPath());
+                pb.redirectErrorStream(true);
+                Process p = pb.start();
+//            List<String> results = readProcessOutput(process.getInputStream());
+                BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+                List<String> results;
+
+                results = br.lines().collect(Collectors.toList());
+
+                for (String result : results) {
+                    LOG.info(result);
+                }
+                p.waitFor();
             }
-
-            LOG.info(String.valueOf(resources[0].exists()));
-            LOG.info(String.valueOf(resources[0].isFile()));
-            LOG.info(String.valueOf(resources[0].getURL()));
-            InputStream inputStream = resources[0].getInputStream();
-            //------------------------------------
-
-            // InputStream으로부터 데이터를 읽어올 BufferedReader 생성
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-
-// BufferedReader를 사용하여 데이터를 읽어와 StringBuilder에 추가
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line).append("\n");
-            }
-
-// StringBuilder에 저장된 데이터를 출력
-            LOG.info(stringBuilder.toString());
-            //------------------------------------
 //            InputStream inputStream = new ClassPathResource("crawling/"+path).getInputStream();
             LOG.info("1");
-            LOG.info(String.valueOf(inputStream));
+//            LOG.info(String.valueOf(inputStream));
 
-            File file =File.createTempFile("crawling/"+path,".py");
-            FileUtils.copyInputStreamToFile(inputStream, file);
+//            File file =File.createTempFile("crawling/"+path,".py");
+//            FileUtils.copyInputStreamToFile(inputStream, file);
 
-            ProcessBuilder pb = new ProcessBuilder("python", file.getPath());
-            pb.redirectErrorStream(true);
-            Process p = pb.start();
-//            List<String> results = readProcessOutput(process.getInputStream());
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-            List<String> results;
-
-            results = br.lines().collect(Collectors.toList());
-
-            for (String result : results) {
-                LOG.info(result);
-            }
-            p.waitFor();
+//            ProcessBuilder pb = new ProcessBuilder("python", file.getPath());
+//            pb.redirectErrorStream(true);
+//            Process p = pb.start();
+////            List<String> results = readProcessOutput(process.getInputStream());
+//            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//
+//            List<String> results;
+//
+//            results = br.lines().collect(Collectors.toList());
+//
+//            for (String result : results) {
+//                LOG.info(result);
+//            }
+//            p.waitFor();
 
         } catch (Exception e){
             throw new CustomException(ResponseCode.CARD_BENEFITS_CRAWLING_FAIL);

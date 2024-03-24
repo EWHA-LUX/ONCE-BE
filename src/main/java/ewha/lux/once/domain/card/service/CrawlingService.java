@@ -74,29 +74,31 @@ public class CrawlingService {
             InputStream inputStream = resources.getInputStream();
             //------------------------------------
 
-            // InputStream으로부터 데이터를 읽어올 BufferedReader 생성
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-
-// BufferedReader를 사용하여 데이터를 읽어와 StringBuilder에 추가
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line).append("\n");
-            }
-
-// StringBuilder에 저장된 데이터를 출력
-            LOG.info(stringBuilder.toString());
+//            // InputStream으로부터 데이터를 읽어올 BufferedReader 생성
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//            String line;
+//            StringBuilder stringBuilder = new StringBuilder();
+//
+//// BufferedReader를 사용하여 데이터를 읽어와 StringBuilder에 추가
+//            while ((line = reader.readLine()) != null) {
+//                stringBuilder.append(line).append("\n");
+//            }
+//
+//// StringBuilder에 저장된 데이터를 출력
+//            LOG.info(stringBuilder.toString());
             //------------------------------------
 //            InputStream inputStream = new ClassPathResource("crawling/"+path).getInputStream();
-            LOG.info("1");
-            LOG.info(String.valueOf(inputStream));
+            LOG.info("=======================================");
 
-            File file =File.createTempFile("crawling/"+path,".py");
-            FileUtils.copyInputStreamToFile(inputStream, file);
+//            File file =File.createTempFile("crawling/"+path,".py");
+//            FileUtils.copyInputStreamToFile(inputStream, file);
+            FileOutputStream local_file=  new FileOutputStream("crawling/"+path);
+            IOUtils.copy(inputStream, local_file);
+            local_file.close();
 
             //=====================================================================
 
-            ProcessBuilder pb = new ProcessBuilder("python", file.getPath());
+            ProcessBuilder pb = new ProcessBuilder("python", "crawling/"+path);
             pb.redirectErrorStream(true);
             Process p = pb.start();
 //            List<String> results = readProcessOutput(process.getInputStream());

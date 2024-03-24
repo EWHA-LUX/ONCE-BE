@@ -46,7 +46,7 @@ public class CrawlingService {
         try {
             Resource resource = ResourcePatternUtils
                     .getResourcePatternResolver(new DefaultResourceLoader())
-                            .getResource("classpath*:crawling/DatabaseInsert.py");
+                    .getResource("classpath*:crawling/Kookmin/**");
 //                    .getResource("classpath*:crawling/"+path);
             LOG.info(String.valueOf(resource));
             InputStream inputStream = resource.getInputStream();

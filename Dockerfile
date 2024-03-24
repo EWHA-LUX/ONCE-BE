@@ -7,4 +7,5 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 COPY ./src/main/resources/crawling /crawling
 
+
 ENTRYPOINT ["java","-jar","/app.jar"]

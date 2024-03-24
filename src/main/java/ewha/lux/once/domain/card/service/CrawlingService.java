@@ -52,10 +52,10 @@ public class CrawlingService {
                 LOG.info(String.valueOf(re));
             }
 
-            LOG.info(String.valueOf(resource[0].exists()));
-            LOG.info(String.valueOf(resource[0].isFile()));
-            LOG.info(String.valueOf(resource[0].getURL()));
-            InputStream inputStream = resource[0].getInputStream();
+            LOG.info(String.valueOf(resources[0].exists()));
+            LOG.info(String.valueOf(resources[0].isFile()));
+            LOG.info(String.valueOf(resources[0].getURL()));
+            InputStream inputStream = resources[0].getInputStream();
             //------------------------------------
 
             // InputStream으로부터 데이터를 읽어올 BufferedReader 생성

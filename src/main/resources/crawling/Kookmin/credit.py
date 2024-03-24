@@ -150,7 +150,7 @@ def cate_page(url,cateIdx):
         formatted_now = now_datetime.strftime("%Y-%m-%d %H:%M:%S.%f")   
         created_at.append(formatted_now)
 
-    
+print("국민은행 신용카드 크롤링 파이썬 코드 실행")
 url='https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0047?pageNo=1&cateIdx='
 for i in range (1, 12):
     cateIdx = str(i)
@@ -162,5 +162,5 @@ type = ["CreditCard"] * len(name)
 data = {"card_company_id":card_company_id, "name" : name, "img_url" : img_url, "benefits": benefits, "created_at": created_at,"type":type}
 df = pd.DataFrame(data)
  
-df.to_csv("src/main/java/ewha/lux/once/domain/card/service/crawling/Kookmin/credit_benefit.csv", encoding = "utf-8-sig", index=False)
+df.to_csv("crawling/Kookmin/credit_benefit.csv", encoding = "utf-8-sig", index=False)
 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S")+" 국민카드 신용카드 크롤링 완료")

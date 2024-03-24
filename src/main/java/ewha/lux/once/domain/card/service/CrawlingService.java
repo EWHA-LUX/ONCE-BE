@@ -12,10 +12,11 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.commons.io.FileUtils;
+
 
 @Service
 @Slf4j
@@ -42,14 +43,16 @@ public class CrawlingService {
     }
     private static void executeFile(String path) throws CustomException {
         try {
-            Resource[] resources = ResourcePatternUtils
+            Resource resource = ResourcePatternUtils
                     .getResourcePatternResolver(new DefaultResourceLoader())
-                    .getResources("classpath*:crawling/**");
-            for(Resource re : resources){
-                LOG.info(String.valueOf(re));
-            }
+                    .getResource("classpath*:crawling/"+path);
+            InputStream inputStream = resource.getInputStream();
+            LOG.info(String.valueOf(inputStream));
 
-            ProcessBuilder pb = new ProcessBuilder("python", "crawling/"+path);
+            File file =File.createTempFile("crawling/"+path,".py");
+            FileUtils.copyInputStreamToFile(inputStream, file);
+
+            ProcessBuilder pb = new ProcessBuilder("python", file.getPath());
             pb.redirectErrorStream(true);
             Process p = pb.start();
 //            List<String> results = readProcessOutput(process.getInputStream());

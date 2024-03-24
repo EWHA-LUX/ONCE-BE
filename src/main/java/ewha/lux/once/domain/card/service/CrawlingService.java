@@ -51,6 +51,21 @@ public class CrawlingService {
             LOG.info(String.valueOf(resource));
             LOG.info(String.valueOf(resource[0]));
             InputStream inputStream = resource[0].getInputStream();
+            //------------------------------------
+
+            // InputStream으로부터 데이터를 읽어올 BufferedReader 생성
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+
+// BufferedReader를 사용하여 데이터를 읽어와 StringBuilder에 추가
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line).append("\n");
+            }
+
+// StringBuilder에 저장된 데이터를 출력
+            LOG.info(stringBuilder.toString());
+            //------------------------------------
 //            InputStream inputStream = new ClassPathResource("crawling/"+path).getInputStream();
             LOG.info("1");
             LOG.info(String.valueOf(inputStream));

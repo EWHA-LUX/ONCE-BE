@@ -5,6 +5,7 @@ import ewha.lux.once.domain.card.dto.CardPerformanceRequestDto;
 import ewha.lux.once.domain.card.dto.CodefCardListRequestDto;
 import ewha.lux.once.domain.card.service.CardService;
 import ewha.lux.once.domain.card.dto.MainCardRequestDto;
+import ewha.lux.once.domain.card.service.CrawlingService;
 import ewha.lux.once.global.common.CommonResponse;
 import ewha.lux.once.global.common.CustomException;
 import ewha.lux.once.global.common.ResponseCode;
@@ -21,6 +22,18 @@ import org.springframework.web.bind.annotation.*;
 public class CardController {
 
     private final CardService cardService;
+    private final CrawlingService crawlingService;
+
+    @GetMapping("test")
+    @ResponseBody
+    public CommonResponse<?> testtest(@AuthenticationPrincipal UserAccount user) {
+        try {
+            crawlingService.cardCrawling();
+            return new CommonResponse<>(ResponseCode.SUCCESS);
+        } catch (CustomException e) {
+            return new CommonResponse<>(e.getStatus());
+        }
+    }
 
     // [Get] 마이월렛 조회
     @GetMapping("")

@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -37,12 +40,19 @@ public class CrawlingService {
         executeFile(cardCompany+"/debit.py");
         executeInsertData(cardCompany,"Debit");
     }
-
     private static void executeFile(String path) throws CustomException {
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", "./crawling/"+path);
+            Resource[] resources = ResourcePatternUtils
+                    .getResourcePatternResolver(new DefaultResourceLoader())
+                    .getResources("classpath*:**");
+            for(Resource re : resources){
+                LOG.info(String.valueOf(re));
+            }
+
+            ProcessBuilder pb = new ProcessBuilder("python", "crawling/"+path);
             pb.redirectErrorStream(true);
             Process p = pb.start();
+//            List<String> results = readProcessOutput(process.getInputStream());
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
             List<String> results;

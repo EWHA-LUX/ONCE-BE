@@ -73,19 +73,19 @@ public class CrawlingService {
             LOG.info(String.valueOf(resources.getURI()));
             InputStream inputStream = resources.getInputStream();
             //------------------------------------
-
+// 코드 자체를 출력해보기(성공)
 //            // InputStream으로부터 데이터를 읽어올 BufferedReader 생성
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-//            String line;
-//            StringBuilder stringBuilder = new StringBuilder();
-//
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+
 //// BufferedReader를 사용하여 데이터를 읽어와 StringBuilder에 추가
-//            while ((line = reader.readLine()) != null) {
-//                stringBuilder.append(line).append("\n");
-//            }
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line).append("\n");
+            }
 //
 //// StringBuilder에 저장된 데이터를 출력
-//            LOG.info(stringBuilder.toString());
+            LOG.info(stringBuilder.toString());
             //------------------------------------
 //            InputStream inputStream = new ClassPathResource("crawling/"+path).getInputStream();
             LOG.info("=======================================");
@@ -93,6 +93,11 @@ public class CrawlingService {
             File file =File.createTempFile("temp",".py");
             FileUtils.copyInputStreamToFile(inputStream, file);
             IOUtils.closeQuietly(inputStream);
+            if (file.exists()) {
+                System.out.println("임시 파일이 정상적으로 생성되었습니다.");
+            } else {
+                System.out.println("임시 파일 생성에 문제가 있습니다.");
+            }
 
             // --------------------------2--------------------------
 //            FileOutputStream local_file=  new FileOutputStream("temp.py");

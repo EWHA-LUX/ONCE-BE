@@ -91,8 +91,17 @@ public class CrawlingService {
             LOG.info("=======================================");
 
             File file =File.createTempFile("temp",".py");
-            FileUtils.copyInputStreamToFile(inputStream, file);
-            IOUtils.closeQuietly(inputStream);
+//            FileUtils.copyInputStreamToFile(inputStream, file);
+//            IOUtils.closeQuietly(inputStream);
+            try {
+                FileUtils.copyInputStreamToFile(inputStream, file);
+                System.out.println("임시 파일에 데이터 복사 완료");
+            } catch (IOException e) {
+                System.out.println("임시 파일에 데이터 복사 중 오류 발생: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                IOUtils.closeQuietly(inputStream);
+            }
             file.setExecutable(true);
             if (file.exists()) {
                 System.out.println("임시 파일이 정상적으로 생성되었습니다.");

@@ -2,6 +2,7 @@ package ewha.lux.once.domain.card.service;
 
 import ewha.lux.once.global.common.CustomException;
 import ewha.lux.once.global.common.ResponseCode;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -28,7 +29,7 @@ import org.apache.commons.io.FileUtils;
 @RequiredArgsConstructor
 public class CrawlingService {
     private static final Logger LOG = LoggerFactory.getLogger(CrawlingService.class);
-    private static final ResourceLoader resourceLoader;
+    private static final ResourceLoader resourceLoader = null;
 
     // 매주 월요일 00:00 카드 혜택 크롤링
 //    @Scheduled(cron = "0 0 0 ? * 1")

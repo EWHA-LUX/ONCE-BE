@@ -95,6 +95,8 @@ public class CrawlingService {
             IOUtils.closeQuietly(inputStream);
             if (file.exists()) {
                 System.out.println("임시 파일이 정상적으로 생성되었습니다.");
+                System.out.println(file.isFile());
+                System.out.println(file.canExecute());
             } else {
                 System.out.println("임시 파일 생성에 문제가 있습니다.");
             }
@@ -103,13 +105,21 @@ public class CrawlingService {
 //            FileOutputStream local_file=  new FileOutputStream("temp.py");
 //            IOUtils.copy(inputStream, local_file);
 //            local_file.close();
+//            if (file.exists()) {
+//                System.out.println("임시 파일이 정상적으로 생성되었습니다.");
+//            } else {
+//                System.out.println("임시 파일 생성에 문제가 있습니다.");
+//            }
 
             //=====================================================================
-
-            ProcessBuilder pb = new ProcessBuilder("python", "temp.py");
+            System.out.println("1");
+            ProcessBuilder pb = new ProcessBuilder("python", file.getAbsolutePath());
+            System.out.println("2");
             pb.redirectErrorStream(true);
+            System.out.println("3");
             Process p = pb.start();
 //            List<String> results = readProcessOutput(process.getInputStream());
+            System.out.println("4");
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
             List<String> results;

@@ -93,10 +93,12 @@ public class CrawlingService {
             File file =File.createTempFile("temp",".py");
             FileUtils.copyInputStreamToFile(inputStream, file);
             IOUtils.closeQuietly(inputStream);
+            file.setExecutable(true);
             if (file.exists()) {
                 System.out.println("임시 파일이 정상적으로 생성되었습니다.");
                 System.out.println(file.isFile());
                 System.out.println(file.canExecute());
+                System.out.println(file.getAbsolutePath());
             } else {
                 System.out.println("임시 파일 생성에 문제가 있습니다.");
             }
@@ -113,6 +115,7 @@ public class CrawlingService {
 
             //=====================================================================
             System.out.println("1");
+            System.out.println(file.getAbsolutePath());
             ProcessBuilder pb = new ProcessBuilder("python", file.getAbsolutePath());
             System.out.println("2");
             pb.redirectErrorStream(true);

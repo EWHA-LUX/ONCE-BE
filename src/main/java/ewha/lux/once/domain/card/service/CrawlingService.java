@@ -73,19 +73,25 @@ public class CrawlingService {
 //            LOG.info(String.valueOf(resources.getURI()));
 //            InputStream inputStream = resources.getInputStream();
 //            //------------------------------------
-//// 코드 자체를 출력해보기(성공)
-//            // InputStream으로부터 데이터를 읽어올 BufferedReader 생성
+// 코드 자체를 출력해보기(성공)
+            // InputStream으로부터 데이터를 읽어올 BufferedReader 생성
+            String filePath = "/crawling/"+path;
+
+// 파일을 열어서 입력 스트림 생성
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream));
+//
 //            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-//            String line;
-//            StringBuilder stringBuilder = new StringBuilder();
-//
-////// BufferedReader를 사용하여 데이터를 읽어와 StringBuilder에 추가
-//            while ((line = reader.readLine()) != null) {
-//                stringBuilder.append(line).append("\n");
-//            }
-//
-//// StringBuilder에 저장된 데이터를 출력
-//            LOG.info(stringBuilder.toString());
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+
+//// BufferedReader를 사용하여 데이터를 읽어와 StringBuilder에 추가
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line).append("\n");
+            }
+
+// StringBuilder에 저장된 데이터를 출력
+            LOG.info(stringBuilder.toString());
             //------------------------------------
 //            InputStream inputStream = new ClassPathResource("crawling/"+path).getInputStream();
             LOG.info("=======================================");

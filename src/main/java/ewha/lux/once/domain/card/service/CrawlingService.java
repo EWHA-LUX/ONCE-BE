@@ -58,59 +58,59 @@ public class CrawlingService {
 //                IOUtils.closeQuietly(inputStream);
 //            }
 
-            Resource resources = ResourcePatternUtils
-                    .getResourcePatternResolver(new DefaultResourceLoader())
-                    .getResource("classpath:crawling/Kookmin/credit.py");
-//                    .getResource("classpath*:crawling/"+path);
-//            for( Resource re : resources){
-//                LOG.info(String.valueOf(re));
-//                LOG.info(String.valueOf(re.exists()));
-//                LOG.info(String.valueOf(re.isFile()));
-//            }
-
-            LOG.info(String.valueOf(resources.exists()));
-            LOG.info(String.valueOf(resources.isFile()));
-            LOG.info(String.valueOf(resources.getURI()));
-            InputStream inputStream = resources.getInputStream();
-            //------------------------------------
-// 코드 자체를 출력해보기(성공)
+//            Resource resources = ResourcePatternUtils
+//                    .getResourcePatternResolver(new DefaultResourceLoader())
+//                    .getResource("classpath:crawling/Kookmin/credit.py");
+////                    .getResource("classpath*:crawling/"+path);
+////            for( Resource re : resources){
+////                LOG.info(String.valueOf(re));
+////                LOG.info(String.valueOf(re.exists()));
+////                LOG.info(String.valueOf(re.isFile()));
+////            }
+//
+//            LOG.info(String.valueOf(resources.exists()));
+//            LOG.info(String.valueOf(resources.isFile()));
+//            LOG.info(String.valueOf(resources.getURI()));
+//            InputStream inputStream = resources.getInputStream();
+//            //------------------------------------
+//// 코드 자체를 출력해보기(성공)
 //            // InputStream으로부터 데이터를 읽어올 BufferedReader 생성
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-
-//// BufferedReader를 사용하여 데이터를 읽어와 StringBuilder에 추가
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line).append("\n");
-            }
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//            String line;
+//            StringBuilder stringBuilder = new StringBuilder();
+//
+////// BufferedReader를 사용하여 데이터를 읽어와 StringBuilder에 추가
+//            while ((line = reader.readLine()) != null) {
+//                stringBuilder.append(line).append("\n");
+//            }
 //
 //// StringBuilder에 저장된 데이터를 출력
-            LOG.info(stringBuilder.toString());
+//            LOG.info(stringBuilder.toString());
             //------------------------------------
 //            InputStream inputStream = new ClassPathResource("crawling/"+path).getInputStream();
             LOG.info("=======================================");
 
-            File file =File.createTempFile("temp",".py");
-//            FileUtils.copyInputStreamToFile(inputStream, file);
-//            IOUtils.closeQuietly(inputStream);
-            try {
-                FileUtils.copyInputStreamToFile(inputStream, file);
-                System.out.println("임시 파일에 데이터 복사 완료");
-            } catch (IOException e) {
-                System.out.println("임시 파일에 데이터 복사 중 오류 발생: " + e.getMessage());
-                e.printStackTrace();
-            } finally {
-                IOUtils.closeQuietly(inputStream);
-            }
-            file.setExecutable(true);
-            if (file.exists()) {
-                System.out.println("임시 파일이 정상적으로 생성되었습니다.");
-                System.out.println(file.isFile());
-                System.out.println(file.canExecute());
-                System.out.println(file.getAbsolutePath());
-            } else {
-                System.out.println("임시 파일 생성에 문제가 있습니다.");
-            }
+//            File file =File.createTempFile("temp",".py");
+////            FileUtils.copyInputStreamToFile(inputStream, file);
+////            IOUtils.closeQuietly(inputStream);
+//            try {
+//                FileUtils.copyInputStreamToFile(inputStream, file);
+//                System.out.println("임시 파일에 데이터 복사 완료");
+//            } catch (IOException e) {
+//                System.out.println("임시 파일에 데이터 복사 중 오류 발생: " + e.getMessage());
+//                e.printStackTrace();
+//            } finally {
+//                IOUtils.closeQuietly(inputStream);
+//            }
+//            file.setExecutable(true);
+//            if (file.exists()) {
+//                System.out.println("임시 파일이 정상적으로 생성되었습니다.");
+//                System.out.println(file.isFile());
+//                System.out.println(file.canExecute());
+//                System.out.println(file.getAbsolutePath());
+//            } else {
+//                System.out.println("임시 파일 생성에 문제가 있습니다.");
+//            }
 
             // --------------------------2--------------------------
 //            FileOutputStream local_file=  new FileOutputStream("temp.py");
@@ -124,8 +124,7 @@ public class CrawlingService {
 
             //=====================================================================
             System.out.println("1");
-            System.out.println(file.getAbsolutePath());
-            ProcessBuilder pb = new ProcessBuilder("python", file.getAbsolutePath());
+            ProcessBuilder pb = new ProcessBuilder("python", "crawling/src/main/resources/crawling/"+path);
             System.out.println("2");
             pb.redirectErrorStream(true);
             System.out.println("3");

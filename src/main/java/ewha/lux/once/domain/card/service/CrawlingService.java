@@ -28,6 +28,7 @@ import org.apache.commons.io.FileUtils;
 @RequiredArgsConstructor
 public class CrawlingService {
     private static final Logger LOG = LoggerFactory.getLogger(CrawlingService.class);
+    private static final ResourceLoader resourceLoader;
 
     // 매주 월요일 00:00 카드 혜택 크롤링
 //    @Scheduled(cron = "0 0 0 ? * 1")
@@ -130,7 +131,8 @@ public class CrawlingService {
 
             //=====================================================================
             System.out.println("1");
-            ProcessBuilder pb = new ProcessBuilder("python", "/crawling/"+path);
+            String pythonScriptPath = resourceLoader.getResource("/crawling/"+path).getFile().getPath();
+            ProcessBuilder pb = new ProcessBuilder("python", pythonScriptPath);
             System.out.println("2");
             pb.redirectErrorStream(true);
             System.out.println("3");

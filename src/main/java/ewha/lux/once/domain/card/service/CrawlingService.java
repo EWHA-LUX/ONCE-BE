@@ -90,15 +90,18 @@ public class CrawlingService {
 //            InputStream inputStream = new ClassPathResource("crawling/"+path).getInputStream();
             LOG.info("=======================================");
 
-//            File file =File.createTempFile("crawling/"+path,".py");
-//            FileUtils.copyInputStreamToFile(inputStream, file);
-            FileOutputStream local_file=  new FileOutputStream("crawling/"+path);
-            IOUtils.copy(inputStream, local_file);
-            local_file.close();
+            File file =File.createTempFile("temp",".py");
+            FileUtils.copyInputStreamToFile(inputStream, file);
+            IOUtils.closeQuietly(inputStream);
+
+            // --------------------------2--------------------------
+//            FileOutputStream local_file=  new FileOutputStream("temp.py");
+//            IOUtils.copy(inputStream, local_file);
+//            local_file.close();
 
             //=====================================================================
 
-            ProcessBuilder pb = new ProcessBuilder("python", "crawling/"+path);
+            ProcessBuilder pb = new ProcessBuilder("python", "temp.py");
             pb.redirectErrorStream(true);
             Process p = pb.start();
 //            List<String> results = readProcessOutput(process.getInputStream());

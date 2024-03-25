@@ -119,7 +119,7 @@ public class CrawlingService {
 
             //=====================================================================
             System.out.println("1");
-            ProcessBuilder pb = new ProcessBuilder("python", "/crawling/"+path);
+            ProcessBuilder pb = new ProcessBuilder("python3", "/crawling/"+path);
             System.out.println("2");
             pb.redirectErrorStream(true);
             System.out.println("3");

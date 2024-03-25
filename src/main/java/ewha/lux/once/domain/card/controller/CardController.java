@@ -15,6 +15,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Controller
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +32,10 @@ public class CardController {
         try {
             crawlingService.cardCrawling();
             return new CommonResponse<>(ResponseCode.SUCCESS);
-        } catch (CustomException e) {
-            return new CommonResponse<>(e.getStatus());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

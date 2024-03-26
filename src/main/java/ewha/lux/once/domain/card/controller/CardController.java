@@ -26,16 +26,6 @@ public class CardController {
     private final CardService cardService;
     private final CrawlingService crawlingService;
 
-    @GetMapping("test")
-    @ResponseBody
-    public CommonResponse<?> testtest(@AuthenticationPrincipal UserAccount user) {
-        try {
-            crawlingService.cardCrawling();
-            return new CommonResponse<>(ResponseCode.SUCCESS);
-        } catch (CustomException e) {
-            return new CommonResponse<>(e.getStatus());
-        }
-    }
 
     // [Get] 마이월렛 조회
     @GetMapping("")

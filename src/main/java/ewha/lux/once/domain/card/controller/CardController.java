@@ -26,7 +26,7 @@ public class CardController {
     private final CardService cardService;
     private final CrawlingService crawlingService;
 
-    @GetMapping("test")
+    @GetMapping("/test")
     @ResponseBody
     public CommonResponse<?> testtest(@AuthenticationPrincipal UserAccount user) {
         try {

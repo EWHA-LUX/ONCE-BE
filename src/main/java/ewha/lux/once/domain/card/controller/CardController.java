@@ -32,10 +32,8 @@ public class CardController {
         try {
             crawlingService.cardCrawling();
             return new CommonResponse<>(ResponseCode.SUCCESS);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (CustomException e) {
+            return new CommonResponse<>(e.getStatus());
         }
     }
 

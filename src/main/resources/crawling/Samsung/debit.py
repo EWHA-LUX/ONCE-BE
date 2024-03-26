@@ -53,13 +53,13 @@ driver.quit()
 data = {"card_name" : card_names, "card_url" : card_urls, "card_img": card_imgs}
 df = pd.DataFrame(data)
 
-df.to_csv("src/main/java/ewha/lux/once/domain/card/service/crawling/Samsung/samsung_checkcardInfos.csv", encoding = "utf-8-sig")
+df.to_csv("/crawling/Samsung/samsung_checkcardInfos.csv", encoding = "utf-8-sig")
 
 '''
     체크 카드 혜택 크롤링
     debit_benefit.csv : card_company_id, name, img_url, benefits, created_at, type
 '''
-card_infos = pd.read_csv('src/main/java/ewha/lux/once/domain/card/service/crawling/Samsung/samsung_checkcardInfos.csv')
+card_infos = pd.read_csv('/crawling/Samsung/samsung_checkcardInfos.csv')
 
 card_urls = card_infos['card_url'].tolist()
 name = card_infos['card_name'].tolist()
@@ -140,7 +140,7 @@ driver.quit()
 data = {"card_company_id": card_company_id, "name": name, "img_url": img_url, "benefits" : benefits, "created_at": created_at, "type": type}
 df = pd.DataFrame(data)
 
-df.to_csv("src/main/java/ewha/lux/once/domain/card/service/crawling/Samsung/debit_benefit.csv", encoding = "utf-8-sig", index=False)
+df.to_csv("/crawling/Samsung/debit_benefit.csv", encoding = "utf-8-sig", index=False)
 
 
 

@@ -18,7 +18,8 @@ chrome_options = Options()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-web-security')
 
-driver = webdriver.Chrome(options=chrome_options)
+service = Service(executable_path='/usr/bin/chromedriver')
+driver = webdriver.Chrome(service=service,options=chrome_options)
 
 driver.implicitly_wait(20)
 print("======= [현대] 신용 카드 리스트 크롤링 =======")
@@ -411,7 +412,8 @@ for i in range(len(card_urls)):
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-web-security')
 
-    driver = webdriver.Chrome(options=chrome_options)
+    service = Service(executable_path='/usr/bin/chromedriver')
+    driver = webdriver.Chrome(service=service,options=chrome_options)
 
     driver.implicitly_wait(20)
     now = datetime.now()

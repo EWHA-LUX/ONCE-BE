@@ -10,7 +10,8 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
 
 RUN apt -y install ./google-chrome-stable_current_amd64.deb
 
-RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/123.0.6312.86/chromedriver_linux64.zip
+RUN export CHROME_DRIVER_VERSION=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip
 
 RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/bin
 

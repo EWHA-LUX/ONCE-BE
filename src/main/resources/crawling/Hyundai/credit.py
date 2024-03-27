@@ -16,9 +16,13 @@ url = "https://www.hyundaicard.com/cpc/ma/CPCMA0101_01.hc?cardflag=ALL"
 
 chrome_options = Options()
 chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--single-process')
+chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('--disable-web-security')
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+service = Service(executable_path='/usr/bin/chromedriver')
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 driver.implicitly_wait(20)
 print("======= [현대] 신용 카드 리스트 크롤링 =======")
@@ -385,14 +389,14 @@ driver.quit()
 data = {"card_name" : card_names, "card_url" : card_urls, "card_img": card_imgs}
 df = pd.DataFrame(data)
 
-df.to_csv("src/main/java/ewha/lux/once/domain/card/service/crawling/Hyundai/hyundai_creditcardInfos.csv", encoding = "utf-8-sig")
+df.to_csv("/crawling/Hyundai/hyundai_creditcardInfos.csv", encoding = "utf-8-sig")
 
 
 '''
     신용 카드 혜택 크롤링
     credit_benefit.csv : card_company_id, name, img_url, benefits, created_at, type
 '''
-card_infos = pd.read_csv('src/main/java/ewha/lux/once/domain/card/service/crawling/Hyundai/hyundai_creditcardInfos.csv')
+card_infos = pd.read_csv('/crawling/Hyundai/hyundai_creditcardInfos.csv')
 
 card_urls = card_infos['card_url'].tolist()
 name = card_infos['card_name'].tolist()
@@ -409,10 +413,13 @@ for i in range(len(card_urls)):
 
     chrome_options = Options()
     chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--single-process')
+    chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--disable-web-security')
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-
+    service = Service(executable_path='/usr/bin/chromedriver')
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     driver.implicitly_wait(20)
     now = datetime.now()
     created_at.append(now)
@@ -454,7 +461,7 @@ driver.quit()
 data = {"card_company_id": card_company_id, "name": name, "img_url": img_url, "benefits" : benefits, "created_at": created_at, "type": type}
 df = pd.DataFrame(data)
 
-df.to_csv("src/main/java/ewha/lux/once/domain/card/service/crawling/Hyundai/credit_benefit.csv", encoding = "utf-8-sig", index=False)
+df.to_csv("/crawling/Hyundai/credit_benefit.csv", encoding = "utf-8-sig", index=False)
 
 
 

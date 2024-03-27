@@ -1,6 +1,3 @@
-# ! pip install boto3
-# ! pip install Pillow
-
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -151,8 +148,14 @@ def cardList(associate):
     url = 'https://www.lottecard.co.kr/app/LPCDAEA_V100.lc'
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    driver = webdriver.Chrome(options=chrome_options)
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--single-process')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--disable-web-security')
+
+    service = Service(executable_path='/usr/bin/chromedriver')
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # 웹 페이지 로드
     driver.get(url)
@@ -236,5 +239,5 @@ type = ["DebitCard"] * len(name)
 data = {"card_company_id":card_company_id, "name" : name, "img_url" : img_url, "benefits": benefits, "created_at": created_at,"type":type}
 df = pd.DataFrame(data)
  
-df.to_csv("src/main/java/ewha/lux/once/domain/card/service/crawling/Lotte/debit_benefit.csv", encoding = "utf-8-sig", index=False)
+df.to_csv("/crawling/Lotte/debit_benefit.csv", encoding = "utf-8-sig", index=False)
 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S")+" 롯데카드 체크카드 크롤링 완료")

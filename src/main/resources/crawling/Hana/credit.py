@@ -16,9 +16,14 @@ from bs4 import BeautifulSoup
 url = "https://www.hanacard.co.kr/OPI31000000D.web?schID=pcd&mID=OPI31000005P&CT_ID=241704030444153#none"
 
 chrome_options = Options()
-chrome_options.add_argument('--headless')  
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--single-process')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--disable-web-security')
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+service = Service(executable_path='/usr/bin/chromedriver')
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 driver.implicitly_wait(20)
 print("======= [하나] 신용 카드 정보 크롤링 =======")
@@ -71,13 +76,13 @@ driver.quit()
 data = {"card_name" : card_names, "card_url" : card_urls, "card_img": card_imgs}
 df = pd.DataFrame(data)
 
-df.to_csv("src/main/java/ewha/lux/once/domain/card/service/crawling/Hana/hana_creditCardInfos.csv", encoding = "utf-8-sig")
+df.to_csv("/crawling/Hana/hana_creditCardInfos.csv", encoding = "utf-8-sig")
 
 '''
     전체 카드 혜택 크롤링
     credit_benefit.csv : card_company_id, name, img_url, benefits, created_at, type
 '''
-card_infos = pd.read_csv('src/main/java/ewha/lux/once/domain/card/service/crawling/Hana/hana_creditCardInfos.csv')
+card_infos = pd.read_csv('/crawling/Hana/hana_creditCardInfos.csv')
 
 
 card_urls = card_infos['card_url'].tolist()
@@ -97,10 +102,15 @@ for i, url in enumerate(card_urls):
     url = f'https://www.hanacard.co.kr/OPI41000000D.web?schID=pcd&mID=PI410{mID_urls[i]}P&CD_PD_SEQ={url}&'
     
     chrome_options = Options()
-    chrome_options.add_argument('--headless')  
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--single-process')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--disable-web-security')
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    
+    service = Service(executable_path='/usr/bin/chromedriver')
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+
     driver.implicitly_wait(20)
     now = datetime.now()
     created_at.append(now)
@@ -250,4 +260,4 @@ driver.quit()
 data = {"card_company_id": card_company_id, "name": name, "img_url": img_url, "benefits" : benefits, "created_at": created_at, "type": type}
 df = pd.DataFrame(data)
 
-df.to_csv("src/main/java/ewha/lux/once/domain/card/service/crawling/Hana/credit_benefit.csv", encoding = "utf-8-sig", index=False)
+df.to_csv("/crawling/Hana/credit_benefit.csv", encoding = "utf-8-sig", index=False)

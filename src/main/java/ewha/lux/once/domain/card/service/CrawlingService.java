@@ -40,7 +40,7 @@ public class CrawlingService {
 
     private static void executeFile(String path) throws CustomException {
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", "./crawling/"+path);
+            ProcessBuilder pb = new ProcessBuilder("python3", "/crawling/"+path);
             pb.redirectErrorStream(true);
             Process p = pb.start();
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -60,7 +60,7 @@ public class CrawlingService {
     }
     private static void executeInsertData(String firstInput, String secondInput) throws CustomException {
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", "./crawling/DatabaseInsert.py",firstInput,secondInput);
+            ProcessBuilder pb = new ProcessBuilder("python3", "/crawling/DatabaseInsert.py",firstInput,secondInput);
             pb.redirectErrorStream(true);
             Process p = pb.start();
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));

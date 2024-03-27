@@ -15,9 +15,14 @@ from bs4 import BeautifulSoup
 url = "https://www.shinhancard.com/pconts/html/card/check/MOBFM282R11.html?crustMenuId=ms527"
 
 chrome_options = Options()
-chrome_options.add_argument('--headless')  
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--single-process')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--disable-web-security')
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+service = Service(executable_path='/usr/bin/chromedriver')
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 driver.implicitly_wait(20)
 print("======= [신한] 체크 카드 정보 크롤링 =======")
@@ -59,13 +64,13 @@ driver.quit()
 data = {"card_name" : card_names, "card_url" : card_urls, "card_img": card_imgs}
 df = pd.DataFrame(data)
 
-df.to_csv("./shinhan_checkCardInfos.csv", encoding = "utf-8-sig")
+df.to_csv("/crawling/Shinhan/shinhan_checkCardInfos.csv", encoding = "utf-8-sig")
 
 '''
     전체 카드 혜택 크롤링
     credit_benefit.csv : card_company_id, name, img_url, benefits, created_at, type
 '''
-card_infos = pd.read_csv('./shinhan_checkCardInfos.csv')
+card_infos = pd.read_csv('/crawling/Shinhan/shinhan_checkCardInfos.csv')
 
 
 card_urls = card_infos['card_url'].tolist()
@@ -83,9 +88,14 @@ for i in range(len(card_urls)):
     url = f'https://www.shinhancard.com/pconts/html/card/apply/check/{card_urls[i]}'
 
     chrome_options = Options()
-    chrome_options.add_argument('--headless')  
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--single-process')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--disable-web-security')
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    service = Service(executable_path='/usr/bin/chromedriver')
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     driver.implicitly_wait(20)
     now = datetime.now()
@@ -200,4 +210,4 @@ driver.quit()
 data = {"card_company_id": card_company_id, "name": name, "img_url": img_url, "benefits" : benefits, "created_at": created_at, "type": type}
 df = pd.DataFrame(data)
 
-df.to_csv("./debit_benefit.csv", encoding = "utf-8-sig", index=False)
+df.to_csv("/crawling/Shinhan/debit_benefit.csv", encoding = "utf-8-sig", index=False)

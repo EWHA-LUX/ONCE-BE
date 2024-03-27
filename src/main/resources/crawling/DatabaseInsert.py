@@ -6,7 +6,7 @@ import datetime
 import configparser
 
 config = configparser.ConfigParser()
-config.read('./crawling/config.ini')
+config.read('/crawling/config.ini')
 
 db_host = config['database']['host']
 db_user = config['database']['user']
@@ -45,7 +45,7 @@ elif sys.argv[2] == 'Debit':
 try:
     with connection.cursor() as cursor:
         # CSV 파일 읽기
-        with open(f'./crawling/{cardCompany}/{csv_file}_benefit.csv', 'r', encoding='utf-8') as csvfile:
+        with open(f'/crawling/{cardCompany}/{csv_file}_benefit.csv', 'r', encoding='utf-8') as csvfile:
             csvreader = csv.reader(csvfile)
 
             next(csvreader)

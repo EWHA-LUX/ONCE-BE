@@ -48,6 +48,8 @@ dependencies {
 
 	//CODEF
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+	implementation 'commons-io:commons-io:2.11.0'
 }
 
 tasks.named('test') {

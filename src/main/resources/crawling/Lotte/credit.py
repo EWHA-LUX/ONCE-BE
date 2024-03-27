@@ -1,4 +1,3 @@
-
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -35,7 +34,7 @@ def s3_put_object(cardImg,cardNo):
         w, h = img.size
         if w < h : # 이미지가 세로인 경우
             img = img.rotate(90, expand=True)
-            
+
             image_fileobj = BytesIO()
             img.save(image_fileobj, format='PNG')
             image_fileobj.seek(0)
@@ -51,10 +50,10 @@ def s3_put_object(cardImg,cardNo):
 # 페이지 크롤링 함수
 def cardCrawling (cardurl):
     benefits=""
-    
+
     cardhtml=urlopen(cardurl)
     cardbs=BeautifulSoup(cardhtml,'html.parser')
-    
+
     # benefits
     benes = cardbs.findAll('div',{'class','bnfCont'})
     if len(benes) == 0:
@@ -86,14 +85,14 @@ def cardCrawling (cardurl):
                         sentence=sentence[0:-2]
                         sentence += " 로 이루어져 있습니다."
                         j+=1
-                    benefits+=sentence 
+                    benefits+=sentence
 
                 except:
-                    if str(detail)[1:3]=="h3": 
+                    if str(detail)[1:3]=="h3":
                         benefits+="["+detail.text+"]"
-                    elif str(detail)[1:3]=="h4": 
+                    elif str(detail)[1:3]=="h4":
                         benefits+="/"+detail.text+": "
-                    elif str(detail)[1:6]=="style": 
+                    elif str(detail)[1:6]=="style":
                         continue
                     else:
                         benefits+=detail.text.replace("\n","").replace('\r','').replace('\t','')
@@ -131,26 +130,32 @@ def cardCrawling (cardurl):
                             sentence=sentence[0:-2]
                             sentence += " 로 이루어져 있습니다."
                             j+=1
-                        benefits+=sentence 
+                        benefits+=sentence
 
                     except:
-                        if str(detail)[1:3]=="h5": 
+                        if str(detail)[1:3]=="h5":
                             benefits+="/"+detail.text.replace("\n","").replace('\r','').replace('\t','')+": "
-                        elif str(detail)[1:7]=="script": 
+                        elif str(detail)[1:7]=="script":
                             continue
                         else:
                             benefits+=detail.text.replace("\n","").replace('\r','').replace('\t','')
             benefits+="\n"
             benefits=benefits.replace("'","")
-            
-    return benefits 
+
+    return benefits
 
 def cardList(associate):
     url = 'https://www.lottecard.co.kr/app/LPCDADA_V100.lc'
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    driver = webdriver.Chrome(options=chrome_options)
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--single-process')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--disable-web-security')
+
+    service = Service(executable_path='/usr/bin/chromedriver')
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # 웹 페이지 로드
     driver.get(url)

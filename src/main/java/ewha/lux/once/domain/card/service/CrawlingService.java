@@ -30,7 +30,7 @@ public class CrawlingService {
         // 카드 혜택 요약 진행
     }
     public void cardCrawlingg() throws CustomException {
-        crawling("Hyundai");
+        crawling("Lotte");
 
         // 카드 혜택 요약 진행
     }

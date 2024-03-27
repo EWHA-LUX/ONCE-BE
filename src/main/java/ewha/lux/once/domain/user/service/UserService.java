@@ -40,7 +40,7 @@ public class UserService implements UserDetailsService {
 
     public Users signup(SignupRequestDto request) throws CustomException, ParseException {
         String loginId = request.getLoginId();
-        String username =  request.getUsername();
+        String username = request.getUsername();
         String password = request.getPassword();
         String nickname = request.getNickname();
         String phone = request.getUserPhoneNum();
@@ -84,7 +84,7 @@ public class UserService implements UserDetailsService {
         Optional<Users> optionalUsers = usersRepository.findByLoginId(loginId);
         Users users = optionalUsers.orElseThrow(() -> new CustomException(ResponseCode.INVALID_USER_ID));
 
-        if (!passwordEncoder.matches(password, users.getPassword())){
+        if (!passwordEncoder.matches(password, users.getPassword())) {
             throw new CustomException(ResponseCode.FAILED_TO_LOGIN);
         }
 
@@ -120,7 +120,7 @@ public class UserService implements UserDetailsService {
                 cardSearchDto.setCardId(card.getId());
                 cardSearchDto.setCardName(card.getName());
                 cardSearchDto.setCardImg(card.getImgUrl());
-                if(card.getType().toString()=="DebitCard") cardSearchDto.setType("체크카드");
+                if (card.getType().toString() == "DebitCard") cardSearchDto.setType("체크카드");
                 else cardSearchDto.setType("신용카드");
                 cardSearchDtos.add(cardSearchDto);
             }
@@ -131,10 +131,10 @@ public class UserService implements UserDetailsService {
         return response;
     }
 
-    public List<CardNameSearchDto> getSearchCardName(String name,String code) throws CustomException{
+    public List<CardNameSearchDto> getSearchCardName(String name, String code) throws CustomException {
         String[] codes = code.split(",");
         List<CardCompany> cardCompanies = cardCompanyRepository.findByCodeIn(Arrays.asList(codes));
-        List<Card> cards = cardRepository.findByNameContainingAndCardCompanyIn(name,cardCompanies);
+        List<Card> cards = cardRepository.findByNameContainingAndCardCompanyIn(name, cardCompanies);
         if (cards.isEmpty()) {
             throw new CustomException(ResponseCode.NO_SEARCH_RESULTS);
         }
@@ -148,11 +148,12 @@ public class UserService implements UserDetailsService {
                 ))
                 .collect(Collectors.toList());
     }
+
     private String getCardTypeName(CardType type) {
         return type == CardType.CreditCard ? "신용카드" : "체크카드";
     }
 
-    public void postSearchCard(Users nowUser,postSearchCardListRequestDto requestDto) throws CustomException {
+    public void postSearchCard(Users nowUser, postSearchCardListRequestDto requestDto) throws CustomException {
         List<Long> card_list = requestDto.getCardList();
         for (Long cardId : card_list) {
             Optional<Card> optionalCard = cardRepository.findById(cardId);
@@ -170,8 +171,8 @@ public class UserService implements UserDetailsService {
     }
 
     public String patchEditProfile(Users nowUser, MultipartFile userProfileImg) throws IOException, CustomException {
-        if(!userProfileImg.isEmpty()) {
-            String storedFileName = s3Uploader.upload(userProfileImg,nowUser.getLoginId()+"-profile.png");
+        if (!userProfileImg.isEmpty()) {
+            String storedFileName = s3Uploader.upload(userProfileImg, nowUser.getLoginId() + "-profile.png");
             nowUser.setProfileImg(storedFileName);
         }
         usersRepository.save(nowUser);
@@ -179,7 +180,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean getIdDuplicateCheck(String loginId) throws CustomException {
-        if(usersRepository.existsByLoginId(loginId)) {
+        if (usersRepository.existsByLoginId(loginId)) {
             return false;
         }
         return true;

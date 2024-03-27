@@ -95,11 +95,18 @@ public class Users extends BaseEntity implements UserDetails {
     }
 
     public void editUserInfo(EditUserInfoRequestDto requestDto){
-        this.username = requestDto.getUsername();
-        this.nickname = requestDto.getNickname();
-        this.birthday = requestDto.getBirthday();
-        this.phone = requestDto.getUserPhoneNum();
+
+        if (requestDto.getUsername() != null)
+            this.username = requestDto.getUsername();
+        if (requestDto.getNickname() != null)
+            this.nickname = requestDto.getNickname();
+        if (requestDto.getBirthday() != null)
+            this.birthday = requestDto.getBirthday();
+        if (requestDto.getUserPhoneNum() != null)
+            this.phone = requestDto.getUserPhoneNum();
     }
+
+
 
     public void setProfileImg(String profileImg) {
         this.profileImg = profileImg;

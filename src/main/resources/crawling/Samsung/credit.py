@@ -18,7 +18,7 @@ chrome_options = Options()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-web-security')
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+driver = webdriver.Chrome(service=webdriver.ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
 driver.implicitly_wait(20)
 print("======= [삼성] 신용 카드 리스트 크롤링 =======")

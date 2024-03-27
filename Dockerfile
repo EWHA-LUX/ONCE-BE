@@ -6,11 +6,11 @@ RUN apt-get update && apt-get install -y python3 python3-pip wget unzip curl
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_112.0.5615.18_amd64.deb
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
 RUN apt -y install ./google-chrome-stable_current_amd64.deb
 
-RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip
+RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip
 
 RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/bin
 

@@ -30,7 +30,7 @@ public class CrawlingService {
         // 카드 혜택 요약 진행
     }
     public void cardCrawlingg() throws CustomException {
-        String[] cardCompanyList = {"Hyundai", "Samsung", "Shinhan", "Lotte", "Hana"};
+        String[] cardCompanyList = {"Hyundai"};
         for (String cardCompany : cardCompanyList){
             crawling(cardCompany);
         }

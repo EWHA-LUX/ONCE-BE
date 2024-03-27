@@ -216,7 +216,8 @@ public class CardService {
     }
 
     // 매주 월요일 04:00 AM 카드 혜택 정보 요약 작업
-    @Scheduled(cron = "0 0 4 ? * 1")
+    // test -ing
+    @Scheduled(cron = "0 25 10 ? * *")
     public void updateBenefitSummary() throws CustomException, JsonProcessingException {
 
         List<Card> cardList = cardRepository.findAll();

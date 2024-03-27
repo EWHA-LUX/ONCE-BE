@@ -8,7 +8,7 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 RUN wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_114.0.5735.198-1_amd64.deb
 
-RUN apt -y install ./google-chrome-stable_current_amd64.deb
+RUN apt -y install ./google-chrome-stable_114.0.5735.198-1_amd64.deb
 
 RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip
 

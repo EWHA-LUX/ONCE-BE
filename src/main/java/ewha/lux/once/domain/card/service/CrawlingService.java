@@ -50,13 +50,13 @@ public class CrawlingService {
             Process p = pb.start();
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
-            List<String> results;
 
-            results = br.lines().collect(Collectors.toList());
-
-            for (String result : results) {
-                LOG.info(result);
+            String line;
+            while ((line = br.readLine()) != null) {
+            	// 실행 결과 처리
+                LOG.info(line);
             }
+
             p.waitFor();
 
         } catch (Exception e){

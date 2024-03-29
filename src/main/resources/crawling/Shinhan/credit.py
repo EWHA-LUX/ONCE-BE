@@ -17,9 +17,7 @@ url = "https://www.shinhancard.com/pconts/html/card/credit/MOBFM281/MOBFM281R11.
 chrome_options = Options()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument("--single-process")
 chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument('--disable-web-security')
 
 service = Service(executable_path=r'/usr/bin/chromedriver')
 driver = webdriver.Chrome(service=service,options=chrome_options)
@@ -42,7 +40,7 @@ div_tag = soup.find('div', {'data-plugin-view': 'cmmCardList'})
 ul_tag = div_tag.find('ul', {'class': 'card_thumb_list_wrap'})
 
 list_elements = ul_tag.find_all('li')
-    
+
 for idx, element in enumerate(list_elements, 1):
     card_name_element = element.find('a', class_='card_name')
 
@@ -87,12 +85,11 @@ print("======= [신한] 전체 카드 혜택 정보 크롤링 =======")
 for i in range(len(card_urls)):
     url = f'https://www.shinhancard.com/pconts/html/card/apply/credit/{card_urls[i]}'
 
+
     chrome_options = Options()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument("--single-process")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument('--disable-web-security')
 
     service = Service(executable_path=r'/usr/bin/chromedriver')
     driver = webdriver.Chrome(service=service,options=chrome_options)
@@ -102,6 +99,7 @@ for i in range(len(card_urls)):
     created_at.append(now)
     print(f"{now} [{card_names[i]}] --- 웹 페이지에 접속 중... ({i+1}/{len(card_urls)})")
 
+    time.sleep(3)
     driver.get(url)
     time.sleep(3)
 

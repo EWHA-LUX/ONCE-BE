@@ -18,9 +18,7 @@ url = "https://www.hanacard.co.kr/OPI31000000D.web?schID=pcd&mID=OPI31000005P&CT
 chrome_options = Options()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument("--single-process")
 chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument('--disable-web-security')
 
 service = Service(executable_path=r'/usr/bin/chromedriver')
 driver = webdriver.Chrome(service=service,options=chrome_options)
@@ -104,9 +102,7 @@ for i, url in enumerate(card_urls):
     chrome_options = Options()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument("--single-process")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument('--disable-web-security')
 
         service = Service(executable_path=r'/usr/bin/chromedriver')
         driver = webdriver.Chrome(service=service,options=chrome_options)
@@ -116,6 +112,7 @@ for i, url in enumerate(card_urls):
     created_at.append(now)
     print(f"{now} [{card_names[i]}] --- 웹 페이지에 접속 중... ({i+1}/{len(card_urls)})")
 
+    time.sleep(3)
     driver.get(url)
     time.sleep(3)
 

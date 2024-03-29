@@ -16,7 +16,8 @@ url = "https://www.hyundaicard.com/cpc/cr/CPCCR0621_11.hc?cardflag=C#aTab_2"
 
 chrome_options = Options()
 chrome_options.add_argument('--headless')
-chrome_options.add_argument('--disable-web-security')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument("--disable-dev-shm-usage")
 
 driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_options)
 
@@ -76,7 +77,8 @@ for i in range(len(card_urls)):
 
     chrome_options = Options()
     chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-web-security')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(executable_path="/usr/bin/chromedriver",chrome_options=chrome_options)
 
@@ -85,6 +87,7 @@ for i in range(len(card_urls)):
     created_at.append(now)
     print(f"{now} [{card_names[i]}] --- 웹 페이지에 접속 중... ({i+1}/{len(card_urls)})")
 
+    time.sleep(3)
     driver.get(card_urls[i])
     time.sleep(3)
 

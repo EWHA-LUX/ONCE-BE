@@ -26,11 +26,11 @@ public class CardController {
     private final CardService cardService;
     private final CrawlingService crawlingService;
 
-    @GetMapping("/test")
+    @GetMapping("/test/{companyID}")
     @ResponseBody
-    public CommonResponse<?> testtest(@AuthenticationPrincipal UserAccount user) {
+    public CommonResponse<?> testtest(@AuthenticationPrincipal UserAccount user, @PathVariable("companyId") int companyId) {
         try {
-            crawlingService.cardCrawlingg();
+            crawlingService.cardCrawlingg(companyId);
             return new CommonResponse<>(ResponseCode.SUCCESS);
         } catch (CustomException e) {
             return new CommonResponse<>(e.getStatus());

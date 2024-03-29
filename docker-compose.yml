@@ -11,3 +11,4 @@ services:
       - 8080:8080
     environment:
       - TZ=Asia/Seoul
+    shm_size: 2gb

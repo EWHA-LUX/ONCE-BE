@@ -16,9 +16,13 @@ url = "https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoCheckca
 
 chrome_options = Options()
 chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument("--single-process")
+chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument('--disable-web-security')
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+service = Service(executable_path=r'/usr/bin/chromedriver')
+driver = webdriver.Chrome(service=service,options=chrome_options)
 
 driver.implicitly_wait(20)
 print("======= [삼성] 체크 카드 리스트 크롤링 =======")
@@ -76,9 +80,13 @@ for i in range(len(card_urls)):
 
     chrome_options = Options()
     chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument("--single-process")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument('--disable-web-security')
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    service = Service(executable_path=r'/usr/bin/chromedriver')
+    driver = webdriver.Chrome(service=service,options=chrome_options)
 
     driver.implicitly_wait(20)
     now = datetime.now()

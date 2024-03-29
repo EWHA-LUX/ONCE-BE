@@ -16,9 +16,14 @@ from bs4 import BeautifulSoup
 url = "https://www.hanacard.co.kr/OPI31000000D.web?schID=pcd&mID=OPI31000005P&CT_ID=241704030444153#none"
 
 chrome_options = Options()
-chrome_options.add_argument('--headless')  
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument("--single-process")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument('--disable-web-security')
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+service = Service(executable_path=r'/usr/bin/chromedriver')
+driver = webdriver.Chrome(service=service,options=chrome_options)
 
 driver.implicitly_wait(20)
 print("======= [하나] 신용 카드 정보 크롤링 =======")
@@ -97,9 +102,14 @@ for i, url in enumerate(card_urls):
     url = f'https://www.hanacard.co.kr/OPI41000000D.web?schID=pcd&mID=PI410{mID_urls[i]}P&CD_PD_SEQ={url}&'
     
     chrome_options = Options()
-    chrome_options.add_argument('--headless')  
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument("--single-process")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument('--disable-web-security')
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+        service = Service(executable_path=r'/usr/bin/chromedriver')
+        driver = webdriver.Chrome(service=service,options=chrome_options)
     
     driver.implicitly_wait(20)
     now = datetime.now()

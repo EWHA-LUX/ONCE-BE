@@ -15,9 +15,14 @@ from bs4 import BeautifulSoup
 url = "https://www.shinhancard.com/pconts/html/card/check/MOBFM282R11.html?crustMenuId=ms527"
 
 chrome_options = Options()
-chrome_options.add_argument('--headless')  
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument("--single-process")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument('--disable-web-security')
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+service = Service(executable_path=r'/usr/bin/chromedriver')
+driver = webdriver.Chrome(service=service,options=chrome_options)
 
 driver.implicitly_wait(20)
 print("======= [신한] 체크 카드 정보 크롤링 =======")
@@ -83,9 +88,14 @@ for i in range(len(card_urls)):
     url = f'https://www.shinhancard.com/pconts/html/card/apply/check/{card_urls[i]}'
 
     chrome_options = Options()
-    chrome_options.add_argument('--headless')  
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument("--single-process")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument('--disable-web-security')
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    service = Service(executable_path=r'/usr/bin/chromedriver')
+    driver = webdriver.Chrome(service=service,options=chrome_options)
 
     driver.implicitly_wait(20)
     now = datetime.now()

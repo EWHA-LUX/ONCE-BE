@@ -61,7 +61,7 @@ df.to_csv("/crawling/Samsung/samsung_checkcardInfos.csv", encoding = "utf-8-sig"
     체크 카드 혜택 크롤링
     debit_benefit.csv : card_company_id, name, img_url, benefits, created_at, type
 '''
-card_infos = pd.read_csv('/crawling/Samsung/samsung_checkcardInfos.csv', index=False)
+card_infos = pd.read_csv('/crawling/Samsung/samsung_checkcardInfos.csv')
 
 card_urls = card_infos['card_url'].tolist()
 name = card_infos['card_name'].tolist()
@@ -145,4 +145,3 @@ data = {"card_company_id": card_company_id, "name": name, "img_url": img_url, "b
 df = pd.DataFrame(data)
 
 df.to_csv("/crawling/Samsung/debit_benefit.csv", encoding = "utf-8-sig", index=False)
-

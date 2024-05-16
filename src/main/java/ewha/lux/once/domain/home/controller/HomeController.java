@@ -1,6 +1,9 @@
 package ewha.lux.once.domain.home.controller;
 
 import ewha.lux.once.domain.card.dto.SearchStoresRequestDto;
+import ewha.lux.once.domain.home.dto.PromptRequestDto;
+import ewha.lux.once.domain.home.dto.TestRequestDto;
+import ewha.lux.once.domain.home.dto.TestResponseDto;
 import ewha.lux.once.domain.home.service.HomeService;
 import ewha.lux.once.global.common.CommonResponse;
 import ewha.lux.once.global.common.CustomException;
@@ -80,5 +83,35 @@ public class HomeController {
             return new CommonResponse<>(e.getStatus());
         }
     }
+
+    // ** 추후 삭제해야 함 - 테스트용 ** ==================================
+    // [Get] 프롬프트 생성
+    @GetMapping("/prompt")
+    @ResponseBody
+    public String generatePrompt(@RequestBody PromptRequestDto promptRequestDto){
+        try{
+            return homeService.getPrompt(promptRequestDto);
+        } catch (CustomException e){
+            return "실패";
+        }
+    }
+
+    // [Get] 카드 추천 test
+    @GetMapping("/test")
+    @ResponseBody
+    public TestResponseDto testrecommend (@RequestBody TestRequestDto testRequestDto){
+        try{
+            return homeService.testRecommend(testRequestDto);
+        } catch (CustomException e){
+            TestResponseDto responseDto = TestResponseDto.builder()
+                    .cardId(0)
+                    .benefit("")
+                    .discount(0)
+                    .build();
+            return responseDto;
+        }
+    }
+
+    // ============================================================
 
 }

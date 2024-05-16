@@ -7,6 +7,7 @@ import ewha.lux.once.domain.card.dto.Place;
 import ewha.lux.once.domain.card.dto.SearchStoresResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ewha.lux.once.domain.card.entity.BenefitSummary;
 import ewha.lux.once.domain.card.entity.Card;
 import ewha.lux.once.domain.card.entity.OwnedCard;
 import ewha.lux.once.domain.home.dto.*;
@@ -18,6 +19,8 @@ import ewha.lux.once.global.common.CustomException;
 import ewha.lux.once.global.common.ResponseCode;
 import ewha.lux.once.global.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +37,8 @@ import java.util.stream.Collectors;
 public class HomeService {
     @Value("${google-map.api-key}")
     private String apiKey;
+    @Qualifier("openaiRestTemplate")
+    @Autowired
     private final RestTemplate restTemplate;
     private final CardRepository cardRepository;
     private final OwnedCardRepository ownedCardRepository;
@@ -51,6 +56,7 @@ public class HomeService {
 
         // 2. GPT 사용하는 경우
         String response = openaiService.cardRecommend(nowUser, keyword, paymentAmount);
+        response = response.replace("“", "\"").replace("”", "\"");
         ObjectMapper objectMapper = new ObjectMapper();
         Integer cardId;
         Card card;
@@ -311,4 +317,100 @@ public class HomeService {
             }
             return resultList;
     }
+
+
+    // ** 추후 삭제해야 함 - 테스트용 ** ==================================
+    private final BenefitSummaryRepository benefitSummaryRepository;
+    public String getPrompt(PromptRequestDto dto) throws CustomException {
+        List<Long> cardIdList = dto.getCardList();
+        List<Card> cardList = cardRepository.findAllById(cardIdList);
+
+        String system ="결제 금액, 결제처, 카드들의 혜택 정보를 입력으로 받아, 각 카드별로 결제처에 해당하는 혜택이 있다면 할인 금액을 계산합니다. 가장 큰 할인을 받을 수 있는 카드의 ”카드번호”, “혜택 정보”, “할인 금액”을 JSON 형식으로 반환합니다.\\\\```를 붙이지 않습니다. 결제처에 해당하는 카드의 혜택이 없거나, 결제처가 분야·브랜드명이 아니라면, 모든 value에 0을 넣어 반환합니다.\\\\”카드번호” 는 해당 카드의 '카드 고유 번호',  “혜택 정보”는 결제처에 해당되는 혜택 정보 요약 텍스트(특수문자 없이 20자 이내)를 의미합니다.";
+        String userInput = "{“결제 금액“: " + dto.getPaymentAmount() + ", “결제처“: “" + dto.getKeyword() + "“, “카드들의 혜택 정보“: [";
+        for (Card card : cardList) {
+            String name = card.getName();
+            String id = card.getId().toString();
+            userInput = userInput +"{“이름“: “"+ name + "“, " + "“카드 고유 번호“ : " + id + ", “혜택“: [ ";
+            List<BenefitSummary> beneList = benefitSummaryRepository.findByCard(card);
+            for( BenefitSummary benefit : beneList){
+                userInput += "“"+benefit.getBenefitField()+"  "+benefit.getBenefitContents()+"“,";
+            }
+            userInput = userInput.substring(0, userInput.length() - 1);
+            userInput += "]},";
+        }
+        userInput = userInput.substring(0, userInput.length() - 1);
+        userInput += "]";
+
+        String answer = "\"{ “카드번호“: "+ dto.getAnswerCardId() +", “혜택 정보“: “"+dto.getAnswerBenefit()+"“, “할인 금액“: "+dto.getAnswerDiscount()+"}\"";
+
+        String prompt = "{\"messages\": [{\"role\": \"system\", \"content\": \""+system+"\"}, { \"role\": \"user\", \"content\": \""+userInput+"}\" }, {\"role\": \"assistant\", \"content\":"+answer+"}]}";
+        return prompt;
+    }
+    @Value("${openai.api.url}")
+    private String apiUrl;
+
+    public TestResponseDto testRecommend(TestRequestDto dto)throws CustomException{
+        String system ="결제 금액, 결제처, 카드들의 혜택 정보를 입력으로 받아, 각 카드별로 결제처에 해당하는 혜택이 있다면 할인 금액을 계산합니다. 가장 큰 할인을 받을 수 있는 카드의 ”카드번호”, “혜택 정보”, “할인 금액”을 JSON 형식으로 반환합니다.\\\\```를 붙이지 않습니다. 결제처에 해당하는 카드의 혜택이 없거나, 결제처가 분야·브랜드명이 아니라면, 모든 value에 0을 넣어 반환합니다.\\\\”카드번호” 는 해당 카드의 '카드 고유 번호',  “혜택 정보”는 결제처에 해당되는 혜택 정보 요약 텍스트(특수문자 없이 20자 이내)를 의미합니다.";
+
+        List<Long> cardIdList = dto.getCardList();
+        List<Card> cardList = cardRepository.findAllById(cardIdList);
+        String userInput = "{”결제 금액”: " + dto.getPaymentAmount() + ", “결제처”: “" + dto.getKeyword() + "“, “카드들의 혜택 정보“: [";
+
+        for (Card card : cardList) {
+            String name = card.getName();
+            String id = card.getId().toString();
+            userInput = userInput +"{“이름“: “"+ name + "“, " + "“카드 고유 번호“ : " + id + ", “혜택“: [ ";
+            List<BenefitSummary> beneList = benefitSummaryRepository.findByCard(card);
+            for( BenefitSummary benefit : beneList){
+                userInput += "“"+benefit.getBenefitField()+"  "+benefit.getBenefitContents()+"“,";
+            }
+            userInput = userInput.substring(0, userInput.length() - 1);
+            userInput += "]},";
+        }
+        userInput = userInput.substring(0, userInput.length() - 1);
+        userInput += "]}";
+
+        String model= dto.getModel();
+
+
+
+        // gpt 요청 보내는 부분
+        OpenaiChatRequest request = new OpenaiChatRequest(model, system, userInput);
+        System.out.println(request);
+        OpenaiChatResponse response = restTemplate.postForObject(apiUrl, request, OpenaiChatResponse.class);
+        System.out.println(response);
+        if (response == null || response.getChoices() == null || response.getChoices().isEmpty()) {
+            throw new CustomException(ResponseCode.FAILED_TO_OPENAI);
+        }
+
+        String result = response.getChoices().get(0).getMessage().getContent();
+        result = result.replace("“", "\"").replace("”", "\"");
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Integer cardId;
+        Card card;
+        String benefit;
+        Integer discount;
+        try {
+            Map<String, Object> map = objectMapper.readValue(result, Map.class);
+            cardId = (Integer) map.get("카드번호");
+            card = cardRepository.findById(Long.valueOf(cardId)).orElse(null);
+            benefit = (String) map.get("혜택 정보");
+            discount = (Integer) map.get("할인 금액");
+
+        } catch (JsonProcessingException e) {
+            throw new CustomException(ResponseCode.FAILED_TO_OPENAI_RECOMMEND);
+        }
+
+        TestResponseDto responseDto = TestResponseDto.builder()
+                .cardId(card.getId())
+                .benefit(benefit)
+                .discount(discount)
+                .build();
+        return responseDto;
+    }
+
+    // ============================================================
+
 }
